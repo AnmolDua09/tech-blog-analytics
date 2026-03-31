@@ -1,0 +1,19 @@
+<div class="search-container">
+  <input 
+    type="text" 
+    [(ngModel)]="searchTerm" 
+    placeholder="Search posts..." 
+    class="search-input"
+  />
+</div>
+
+<ul class="post-list" *ngIf="posts.length > 0; else noPosts">
+  <li *ngFor="let post of posts | filterPosts: searchTerm" class="post-item">
+    <h3>{{ post.title }}</h3>
+    <small>{{ post.createdAt | date }}</small>
+  </li>
+</ul>
+
+<ng-template #noPosts>
+  <p>No posts available.</p>
+</ng-template>
