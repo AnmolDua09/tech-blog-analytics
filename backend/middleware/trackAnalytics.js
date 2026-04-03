@@ -1,21 +1,17 @@
 const Analytics = require('../models/Analytics');
 
 const trackAnalytics = async (req, res, next) => {
-  // Move to the route immediately to keep the API fast
-  next();
+  next(); // Keep the API fast
 
   try {
-    // 🛡️ Use the EXACT column names from your 'analytics_db'
     await Analytics.create({
-      post_slug: req.params.slug || 'home_feed', // Matches your 'post_slug' column
-      ip_address: req.ip || '127.0.0.1',         // Matches your 'ip_address' column
-      device_type: req.get('User-Agent') || 'Web', // Matches your 'device_type' column
-      // 'timestamp' is usually handled automatically by Sequelize (createdAt)
+      // Ensure these keys match the model exactly!
+      post_slug: req.params.slug || 'home_feed',
+      ip_address: req.ip || '127.0.0.1',
+      device_type: req.get('User-Agent') || 'Unknown'
     });
-
-    console.log("📊 Analytics row inserted successfully.");
+    console.log("✅ Analytics: View recorded in PostgreSQL");
   } catch (err) {
-    // This catches the "column does not exist" error
     console.error('❌ Analytics Write Failed:', err.message);
   }
 };

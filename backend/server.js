@@ -18,10 +18,11 @@ const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   await connectMongoDB();
   await connectPostgres();
-  
+
   // Sync Postgres models (create tables if not exists)
-  await sequelize.sync(); 
-  console.log('PostgreSQL models synced');
+
+  await sequelize.sync({ alter: true });
+  console.log('PostgreSQL models synced (Altered to match schema)');
 
   app.listen(PORT, () => {
     console.log(`Backend server running on http://localhost:${PORT}`);
